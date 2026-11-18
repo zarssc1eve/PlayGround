@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -uo pipefail
 
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-: "${CAPTURE_URL:?Set CAPTURE_URL to the exact preview URL}"
-: "${CAPTURE_DIR:?Set CAPTURE_DIR to the evidence output directory}"
-: "${RUNTIME_DIR:?RUNTIME_DIR must point to the worker runtime}"
-cd "$PROJECT_DIR"
+cd "$PROJECT_DIR" || exit 1
+
+RUNTIME_DIR="${RUNTIME_DIR:-/home/runner/work/_temp/omgithub-runtime}"
 
 run_timed() {
   local label="$1"
@@ -13,7 +12,34 @@ run_timed() {
   /usr/bin/time -f "[timing] ${label}: %e s" "$@"
 }
 
-run_timed "prepare capture directory" mkdir -p "$CAPTURE_DIR"
-# The runtime capture helper opens the exact CAPTURE_URL, waits for the page,
-# captures desktop and mobile PNGs, and closes the browser it launched.
-run_timed "capture desktop and mobile views" env CAPTURE_STRICT=1 node "$RUNTIME_DIR/scripts/default-capture.mjs"
+if [[ -z "${CAPTURE_URL:-}" ]]; then
+  echo "CAPTURE_URL is required" >&2
+  exit 1
+fi
+if [[ -z "${CAPTURE_DIR:-}" ]]; then
+  echo "CAPTURE_DIR is required" >&2
+  exit 1
+fi
+
+run_timed "prepare capture directory" mkdir -p "$CAPTURE_DIR" || exit 1
+
+set +e
+run_timed "capture desktop and mobile views" env \
+  CAPTURE_STRICT=1 \
+  CAPTURE_URL="$CAPTURE_URL" \
+  CAPTURE_DIR="$CAPTURE_DIR" \
+  node "$RUNTIME_DIR/scripts/default-capture.mjs"
+status=$?
+set -e
+
+[[ $status -eq 75 ]] && exit 75
+[[ $status -eq 0 ]] || exit 1
+
+for image in final-desktop.png final-mobile.png; do
+  if [[ ! -s "$CAPTURE_DIR/$image" ]]; then
+    echo "Rendering defect: missing $image" >&2
+    exit 1
+  fi
+done
+
+exit 0
