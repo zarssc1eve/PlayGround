@@ -1,0 +1,1 @@
+{"name":"shadow-district","private":true,"type":"module","scripts":{"dev":"vite --host 0.0.0.0 --port 3002","build":"vite build"},"devDependencies":{"vite":"7.3.6"}}
