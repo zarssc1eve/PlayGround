@@ -1,2 +1,0 @@
-const { chromium }=require('playwright');
-(async()=>{const b=await chromium.launch({headless:true,executablePath:'/home/runner/.cache/ms-playwright/chromium-1255/chrome-linux64/chrome',args:['--no-sandbox']});const p=await b.newPage({viewport:{width:1280,height:720}});p.on('response',r=>{if(r.status()>=400)console.log(r.status(),r.url())});p.on('requestfailed',r=>console.log('FAILED',r.url(),r.failure()?.errorText));await p.goto('http://127.0.0.1:3002/index.html',{waitUntil:'networkidle',timeout:60000});await b.close()})();
