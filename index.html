@@ -18,6 +18,7 @@
     #toast{position:absolute;left:50%;top:20%;transform:translateX(-50%);padding:10px 16px;border-left:2px solid #71ccd5;background:rgba(5,13,16,.86);opacity:0;transition:.25s}.touch{display:none;position:absolute;pointer-events:auto}#joy{left:20px;bottom:34px;width:118px;height:118px;border:1px solid rgba(150,220,225,.25);border-radius:50%}.stick{position:absolute;width:48px;height:48px;border-radius:50%;left:35px;top:35px;background:rgba(130,210,215,.28);border:1px solid rgba(180,240,240,.45)}.action{right:24px;bottom:38px;width:66px;height:66px;border-radius:50%;display:grid;place-items:center;border:1px solid rgba(150,220,225,.35);background:rgba(25,55,58,.6)}
     @media(max-width:700px){#mission{right:10px;top:10px;width:190px}.mission-name{font-size:12px}#objective{font-size:10px}#mapWrap{left:10px;top:10px;width:112px;height:112px}.compass{display:none}#bars{left:10px;bottom:14px;width:190px}#weapon{right:10px;bottom:142px}.touch{display:grid}.action{display:none}}
   </style>
+  <script type="module" crossorigin src="/assets/index-C4oNhXwL.js"></script>
 </head>
 <body>
   <canvas id="game"></canvas>
@@ -31,6 +32,5 @@
   </div>
   <div id="menu"><div class="card panel"><button class="close" id="closeMenu">CLOSE</button><h2>FIELD KIT</h2><div class="grid"><div class="item"><div class="eyebrow">Salvage</div><div class="resource" id="salvageCount">0 units</div><button id="craftMed">Craft medkit · 2</button></div><div class="item"><div class="eyebrow">Medical</div><div class="resource" id="medCount">1 medkit</div><button id="useMed">Use medkit</button></div><div class="item"><div class="eyebrow">Weapons</div><div class="resource">M12 Sidearm · PULSE-9</div><button id="reloadBtn">Reload weapon</button></div><div class="item"><div class="eyebrow">System</div><div class="resource" id="saveState">Checkpoint not saved</div><button id="saveBtn">Save progress</button></div></div></div></div>
   <div id="joy" class="touch"><div class="stick" id="stick"></div></div><div id="mobileAction" class="touch action">USE</div>
-<script type="module" src="/src/main.js"></script>
 </body>
 </html>
